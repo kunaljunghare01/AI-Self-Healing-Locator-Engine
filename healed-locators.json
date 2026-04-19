@@ -1,0 +1,16 @@
+{
+  "#user-name-field" : {
+    "healedLocator"       : "[data-test='username']",
+    "elementDescription"  : "Username text input field on the login page",
+    "pageUrl"             : "https://www.saucedemo.com",
+    "healedAt"            : "2024-05-01T10:30:00",
+    "timesUsed"           : 1
+  },
+  ".btn-login-submit" : {
+    "healedLocator"       : "[data-test='login-button']",
+    "elementDescription"  : "The primary login button that submits the login form",
+    "pageUrl"             : "https://www.saucedemo.com",
+    "healedAt"            : "2024-05-01T10:31:00",
+    "timesUsed"           : 1
+  }
+}

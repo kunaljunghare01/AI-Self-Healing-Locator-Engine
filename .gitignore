@@ -1,0 +1,6 @@
+target/
+*.class
+.idea/
+*.iml
+allure-report/
+# DO NOT ignore healed-locators.json — commit it so team shares healed mappings

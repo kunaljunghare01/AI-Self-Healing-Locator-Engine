@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- pom.xml — Maven build file for AI Self-Healing Locator Engine
+     Dependencies: Playwright (Java), Claude API (HTTP), TestNG, Allure, Jackson -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.selfhealing</groupId>
+  <artifactId>ai-self-healing-locator</artifactId>
+  <version>1.0.0</version>
+  <packaging>jar</packaging>
+
+  <name>AI Self-Healing Locator Engine</name>
+  <description>
+    LLM + MCP powered self-healing locator engine for Playwright tests.
+    When a locator breaks due to UI changes, the LLM reads the live DOM
+    and suggests a corrected locator — automatically, without human intervention.
+  </description>
+
+  <properties>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <!-- Dependency versions -->
+    <playwright.version>1.44.0</playwright.version>
+    <testng.version>7.10.2</testng.version>
+    <allure.version>2.27.0</allure.version>
+    <jackson.version>2.17.1</jackson.version>
+    <slf4j.version>2.0.13</slf4j.version>
+  </properties>
+
+  <dependencies>
+
+    <!-- ── Playwright Java ──────────────────────────────────────────────
+         Microsoft's browser automation library for Java.
+         Provides Browser, BrowserContext, Page, Locator APIs.
+         We use it to launch Chrome, interact with elements, and
+         intercept failures when locators break. -->
+    <dependency>
+      <groupId>com.microsoft.playwright</groupId>
+      <artifactId>playwright</artifactId>
+      <version>${playwright.version}</version>
+    </dependency>
+
+    <!-- ── Jackson Databind ─────────────────────────────────────────────
+         Converts Java objects ↔ JSON.
+         Used for:
+           1. Building Claude API request/response bodies
+           2. Reading/writing healed-locators.json storage file
+           3. Parsing MCP tool call payloads -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>${jackson.version}</version>
+    </dependency>
+
+    <!-- ── TestNG ───────────────────────────────────────────────────────
+         Test runner. Provides @Test, @BeforeClass, @AfterClass.
+         Our demo tests use TestNG to show self-healing in action. -->
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <version>${testng.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- ── Allure TestNG ────────────────────────────────────────────────
+         Generates HTML reports showing which locators were healed,
+         what the LLM suggested, and whether healing succeeded. -->
+    <dependency>
+      <groupId>io.qameta.allure</groupId>
+      <artifactId>allure-testng</artifactId>
+      <version>${allure.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- ── SLF4J Logging ────────────────────────────────────────────────
+         Logging facade — prints healing events to console and log files. -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <plugins>
+      <!-- Maven Surefire — runs TestNG tests via `mvn test` -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.2.5</version>
+        <configuration>
+          <suiteXmlFiles>
+            <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
+          </suiteXmlFiles>
+          <systemPropertyVariables>
+            <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
+          </systemPropertyVariables>
+        </configuration>
+      </plugin>
+
+      <!-- Allure Maven — generates HTML report from raw results -->
+      <plugin>
+        <groupId>io.qameta.allure</groupId>
+        <artifactId>allure-maven</artifactId>
+        <version>2.12.0</version>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
