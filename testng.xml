@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="AI Self-Healing Locator Engine" verbose="1">
+  <listeners>
+    <listener class-name="io.qameta.allure.testng.AllureTestNg"/>
+  </listeners>
+  <test name="Self-Healing Demo Tests" preserve-order="true">
+    <classes>
+      <class name="com.selfhealing.tests.SelfHealingDemoTest"/>
+    </classes>
+  </test>
+</suite>
